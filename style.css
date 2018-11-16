@@ -1,0 +1,17 @@
+.texte-message{
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    width: 100%;
+    height: 200px;
+    overflow: auto;
+}
+
+.pseudo-font {
+    display: inline;
+    color: cadetblue;
+}
+
+.message-font {
+    display: inline;
+    padding-bottom: 20px
+}
