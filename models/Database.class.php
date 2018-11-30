@@ -4,8 +4,8 @@
  * Usage : 
  * $dbLink = new Database();
  * 
- * $req1 = $dbLink->execute("SELECT * FROM users");
- * $req2 = $dbLink->execute("SELECT * FROM users WHERE username = :username", ["username" => "rigwild"]);
+ * $req1 = $dbLink->execute('SELECT * FROM users');
+ * $req2 = $dbLink->execute('SELECT * FROM users WHERE username = :username', ['username' => 'rigwild']);
  * 
  * The link with the database is established once on each reload.
  * 
@@ -41,12 +41,32 @@ class Database {
     return $conn;
   }
 
-  public function execute($query, $parametersArray = []) {
+  /**
+   * Execute a select query
+   * @param query the SQL query to execute
+   * @param parametersArray an array of parameters
+   * 
+   * @return boolean the result of the query
+   */
+  public function select($query, $parametersArray = []) {
     $conn = $this->connect();
     $stmt = $conn->prepare($query);
     if ($stmt->execute($parametersArray))
       return $stmt->fetchAll();
     return null;
+  }
+
+  /**
+   * Execute a query that doesn't return any tuples
+   * @param query the SQL query to execute
+   * @param parametersArray an array of parameters
+   * 
+   * @return boolean the query worked
+   */
+  public function execute($query, $parametersArray = []) {
+    $conn = $this->connect();
+    $stmt = $conn->prepare($query);
+    return ($stmt->execute($parametersArray));
   }
 }
 ?>

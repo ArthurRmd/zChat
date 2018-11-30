@@ -1,33 +1,50 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
-  `pseudo` varchar(80) COLLATE utf8_bin DEFAULT NULL,
-  `password` varchar(150) COLLATE utf8_bin DEFAULT NULL,
-  `is_banned` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
-CREATE TABLE `friend` (
+
+CREATE TABLE friend (
   `user1` int(11) NOT NULL,
   `user2` int(11) NOT NULL,
   `timestamp_friend` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE `message` (
+CREATE TABLE message (
   `id` int(11) NOT NULL,
-  `sender` int(11) DEFAULT NULL,
+  `sender` int(11) NOT NULL,
   `receiver` int(11) NOT NULL,
   `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `content` varchar(1000) COLLATE utf8_bin DEFAULT NULL
+  `content` varchar(1000) COLLATE utf8_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+INSERT INTO message (id, sender, receiver, `timestamp`, content) VALUES
+(1, 1, 1, '2018-11-30 15:24:08', 'lol'),
+(2, 1, 1, '2018-11-30 16:32:31', 'bonjour'),
+(3, 1, 1, '2018-11-30 16:32:38', 'bonjour'),
+(4, 1, 1, '2018-11-30 16:33:37', 'bonjour'),
+(5, 1, 1, '2018-11-30 16:40:51', 'bonjour');
 
-ALTER TABLE `friend`
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `pseudo` varchar(80) COLLATE utf8_bin NOT NULL,
+  `password` varchar(150) COLLATE utf8_bin NOT NULL,
+  `is_banned` tinyint(1) NOT NULL DEFAULT '0',
+  `timestamp_creation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+INSERT INTO `user` (id, pseudo, `password`, is_banned, timestamp_creation) VALUES
+(1, 'rigwild', 'fzefzefzefzef', 0, '2018-11-30 15:23:35');
+
+
+ALTER TABLE friend
   ADD KEY `user1` (`user1`),
   ADD KEY `user2` (`user2`);
 
-ALTER TABLE `message`
+ALTER TABLE message
   ADD PRIMARY KEY (`id`),
   ADD KEY `author` (`sender`),
   ADD KEY `receiver` (`receiver`);
@@ -35,16 +52,20 @@ ALTER TABLE `message`
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
-ALTER TABLE `message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE message
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `friend`
+ALTER TABLE friend
   ADD CONSTRAINT `friend_ibfk_1` FOREIGN KEY (`user1`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `friend_ibfk_2` FOREIGN KEY (`user2`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE `message`
+ALTER TABLE message
   ADD CONSTRAINT `message_ibfk_1` FOREIGN KEY (`sender`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `message_ibfk_2` FOREIGN KEY (`receiver`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
