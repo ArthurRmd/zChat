@@ -22,11 +22,11 @@ CREATE TABLE message (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 INSERT INTO message (id, sender, receiver, `timestamp`, content) VALUES
-(1, 1, 1, '2018-11-30 15:24:08', 'lol'),
-(2, 1, 1, '2018-11-30 16:32:31', 'bonjour'),
-(3, 1, 1, '2018-11-30 16:32:38', 'bonjour'),
-(4, 1, 1, '2018-11-30 16:33:37', 'bonjour'),
-(5, 1, 1, '2018-11-30 16:40:51', 'bonjour');
+(1, 1, 2, '2018-11-30 15:24:08', 'bonjour0'),
+(2, 1, 2, '2018-11-30 16:32:31', 'bonjour1'),
+(3, 2, 1, '2018-11-30 16:32:38', 'bonjour2'),
+(4, 1, 2, '2018-11-30 16:33:37', 'bonjour3'),
+(5, 2, 1, '2018-11-30 16:40:51', 'bonjour4');
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
@@ -37,7 +37,8 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 INSERT INTO `user` (id, pseudo, `password`, is_banned, timestamp_creation) VALUES
-(1, 'rigwild', 'fzefzefzefzef', 0, '2018-11-30 15:23:35');
+(1, 'rigwild', 'azerty', 0, '2018-11-30 15:23:35'),
+(2, 'rigwild2', 'azerty', 0, '2018-11-30 15:23:35');
 
 
 ALTER TABLE friend

@@ -4,11 +4,9 @@ require __DIR__.'/../Util.class.php';
 
 Util::checkLoggedInAPI();
 
-$json = Util::getJSON();
-
-if ($json && !empty($json['receiver']) && !empty($json['sender'])) {
-  $receiver = $json['receiver'];
-  $sender = $json['sender'];
+if (!empty($_GET['friendId'])) {
+  $userId = $_SESSION['user']['id'];
+  $friendId = $_GET['friendId'];
 
   require __DIR__.'/../models/getMessage.php';
 
@@ -19,10 +17,10 @@ if ($json && !empty($json['receiver']) && !empty($json['sender'])) {
     exit();
   }
   
-  echo json_encode($messages);
+  echo json_encode($res);
   exit();
 }
-else
+else // Incomplete request
   http_response_code(400);
 
 ?>
