@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__.'/../Util.class.php';
+require __DIR__.'/../lib/Util.class.php';
 
 Util::checkLoggedInAPI();
 

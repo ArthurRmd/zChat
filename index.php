@@ -2,7 +2,8 @@
 
 session_start();
 
-function routerReq($page = "erreur") {
+function routerReq($page = "erreur")
+{
   if (!empty($_GET['page']) && is_file('controllers/'.$_GET['page'].'.php'))
     require('controllers/'.$_GET['page'].'.php');
   else {
@@ -15,4 +16,5 @@ function routerReq($page = "erreur") {
 }
 
 routerReq("accueil");
+
 ?>

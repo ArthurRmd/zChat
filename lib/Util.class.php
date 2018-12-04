@@ -23,6 +23,12 @@ class Util {
     $json = json_decode($json, true);
     return json_last_error() === JSON_ERROR_NONE ? $json : null;
   }
+
+  public static function convertEmoji($str = "")
+  {
+    $emojis = file_get_contents(__DIR__.'/discord_emojis.min.json');
+    $emojis = json_decode($emojis, true);
+  }
 }
 
 ?>
