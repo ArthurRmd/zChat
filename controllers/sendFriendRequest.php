@@ -2,27 +2,37 @@
 
 require __DIR__.'/../lib/Util.class.php';
 
+// We verify the user is logged in
 Util::checkLoggedInAPI();
 
+// Get the body from the request
 $json = Util::getJSON();
 
-if ($json && !empty($json['toFriendId'])) {
-  $userId = $_SESSION['user']['id'];
-  $toFriendId = $json['toFriendId'];
+// API endpoint request method
+$requestType = 'POST';
 
-  require __DIR__.'/../models/insertFriendRequest.php';
-
-  // The user does not exist or already friends
-  if (isset($error)) {
-    http_response_code(isset($httpCode) ? $httpCode : 500);
-    echo json_encode(['error' => $error]);
-    exit();
-  }
-  
-  echo json_encode($res);
+// Check if HTTP method matches
+if ($_SERVER['REQUEST_METHOD'] !== $requestType) {
+  http_response_code(405);
   exit();
 }
-else // Incomplete request
+
+// Check if the body of the request contains the needed data
+if (!$json || !empty($json['toFriendId'])) {
   http_response_code(400);
+  exit();
+}
+
+$userId = $_SESSION['user']['id'];
+$toFriendId = $json['toFriendId'];
+
+require __DIR__.'/../models/insertFriendRequest.php';
+
+// The database returned an error
+if (isset($error))
+  require __DIR__.'/error.php';
+
+// Everything is fine, send the result
+echo json_encode($res);
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-require 'Database.class.php';
+require __DIR__.'/../lib/Database.class.php';
 
 $dbLink = new Database();
 
