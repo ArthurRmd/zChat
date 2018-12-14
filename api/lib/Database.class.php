@@ -46,7 +46,7 @@ class Database {
    * @param query the SQL query to execute
    * @param parametersArray an array of parameters
    * 
-   * @return boolean the result of the query
+   * @return array the result of the query
    */
   public function select($query, $parametersArray = []) {
     $conn = $this->connect();

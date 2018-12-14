@@ -5,7 +5,7 @@ class Util {
   public static function checkLoggedInAPI()
   {
     if (!(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'])) {
-      http_response_code(403);
+      http_response_code(401);
       exit();
     }
   }
