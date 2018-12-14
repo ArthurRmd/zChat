@@ -19,7 +19,7 @@
 
 
     <!-- Fichier Perso -->
-    <link rel="stylesheet" type="text/css" media="screen" href="./css/style.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="./assets/css/style.css" />
 
     
 
@@ -125,8 +125,8 @@
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
-    <script src="js/inscription.js"></script>
-    <script src="js/app.js"></script>
+    <script src="./assets/js/inscription.js"></script>
+    <script src="./assets/js/app.js"></script>
 
 </body>
 
