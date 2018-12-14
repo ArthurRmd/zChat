@@ -2,19 +2,24 @@
 
 session_start();
 
-function routerReq($page = "erreur")
-{
-  if (!empty($_GET['page']) && is_file('controllers/'.$_GET['page'].'.php'))
-    require('controllers/'.$_GET['page'].'.php');
+header('Content-Type: application/json');
+
+$controller = $_GET['controller'] ?? null;
+
+// Load the right controller
+if (!empty($controller)) {
+  if (is_file('controllers/'.$controller.'.php'))
+    require __DIR__.'/controllers/'.$controller.'.php';
   else {
-    $page = "controllers/". $page .".php";
-    if (file_exists($page))
-      require $page;
-    else 
-      echo "Le fichier $page n'existe pas.";
+    $error = 'Unknown controller.';
+    $httpCode = 404;
+    require __DIR__.'/controllers/error.php';
   }
 }
-
-routerReq("accueil");
+else {
+  $error = 'You must specify a controller by using `?controller=requestedController`.';
+  $httpCode = 409;
+  require __DIR__.'/controllers/error.php';
+}
 
 ?>
