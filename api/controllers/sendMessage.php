@@ -27,6 +27,9 @@ $userId = $_SESSION['user']['id'];
 $friendId = $json['friendId'];
 $content = $json['content'];
 
+// Convert emojis
+$content = Util::convertEmoji($content);
+
 require __DIR__.'/../models/insertMessage.php';
   
 // The database returned an error
