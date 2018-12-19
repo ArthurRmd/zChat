@@ -8,6 +8,15 @@ if (is_array($json))
 	if (!empty($json["pseudo"]) && !empty($json["mdp"]))
 	{
 
+
+		$requete = $bdd->prepare("select * from user where mail_user= :id  ");
+          
+        $requete->bindParam(':id', $id);
+        $id = $json["id"];
+        $requete-> execute();
+      
+        $resultat = $requete-> fetchall();
+
 		if (!empty($resultat) && $resultat[0]['pseudo'] == $pseudo)
 		{
 			$password = $json["mdp"];
