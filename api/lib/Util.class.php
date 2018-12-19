@@ -1,11 +1,11 @@
 <?php
 
 class Util {
-  // Check if the user is logged in
-  public static function checkLoggedInAPI()
+  // Check if the user is logged in. $shouldBe = page require login
+  public static function checkLoggedInAPI($shouldBe = true)
   {
-    if (!(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'])) {
-      http_response_code(403);
+    if ($_SESSION['loggedIn'] !== $shouldBe) {
+      http_response_code(401);
       exit();
     }
   }

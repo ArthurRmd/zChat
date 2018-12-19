@@ -2,8 +2,8 @@
 
 require __DIR__.'/../lib/Util.class.php';
 
-// We verify the user is logged in
-Util::checkLoggedInAPI();
+// We verify the user is not logged in
+Util::checkLoggedInAPI(false);
 
 // Get the body from the request
 $json = Util::getJSON();
@@ -18,25 +18,24 @@ if ($_SERVER['REQUEST_METHOD'] !== $requestType) {
 }
 
 // Check if the body of the request contains the needed data
-if (!$json || empty($json['friendId']) || empty($json['content'])) {
+if (!$json || empty($json['pseudo']) || empty($json['password'])) {
   http_response_code(400);
   exit();
 }
 
-$userId = $_SESSION['user']['id'];
-$friendId = $json['friendId'];
-$content = $json['content'];
+$pseudo = $json['pseudo'];
+$password = $json['password'];
 
-// Convert emojis
-$content = Util::convertEmoji($content);
-
-require __DIR__.'/../models/sendMessage.php';
+require __DIR__.'/../models/login.php';
   
 // The database returned an error
 if (isset($error))
   require __DIR__.'/error.php';
 
+
+$_SESSION['loggedIn'] = true;
+$_SESSION['user'] = $res;
 // Everything is fine, send the result
-echo json_encode($res);
+echo json_encode(true);
 
 ?>

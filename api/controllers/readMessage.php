@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] !== $requestType) {
 }
 
 // Check if the body of the request contains the needed data
-if (!$json || !empty($_GET['friendId'])) {
+if (empty($_GET['friendId'])) {
   http_response_code(400);
   exit();
 }
