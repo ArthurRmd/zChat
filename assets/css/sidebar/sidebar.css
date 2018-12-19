@@ -3,34 +3,3 @@
     height: 100vh;
     width: 20vw;
 }
-
-.espace-gauche{
-   margin-left: 260px;
-   
-}
-
-.test{
-    height: 100vh;
-}
-
-.zone-message{
-    padding: 0 10px 0 10px;
-}
-
-.btn{
-    position: absolute;
-    top: 10px;
-}
-
-.avatar{
-    border-radius: 50px;
-  
-}
-.p-avatar{
-    display: inline;
-    padding-left: 10px
-}
-
-.liste-avatar{
-    padding-top: 20px;
-}
