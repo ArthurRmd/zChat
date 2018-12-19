@@ -5,8 +5,9 @@ class Util {
   public static function checkLoggedInAPI($shouldBe = true)
   {
     if ($_SESSION['loggedIn'] !== $shouldBe) {
-      http_response_code(401);
-      exit();
+      $httpCode = 401;
+      $error = 'You need to be logged '.($shouldBe ? 'in' : 'out').' to use this endpoint.';
+      require __DIR__.'/../controllers/error.php';
     }
   }
 

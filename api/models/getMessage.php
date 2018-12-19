@@ -19,6 +19,7 @@ try {
   }
 
 
+
   // Get the messages
   $query = 'SELECT * FROM message WHERE
   (sender = :userId AND receiver = :friendId)
@@ -34,8 +35,15 @@ try {
     'friendId2' => $friendId
   ];
 
+  $messages = $dbLink->select($query, $param);
+  
+  // Get friend data
+  $friendData = $dbLink->select(
+    'SELECT id, pseudo, is_banned FROM user WHERE id = :friendId',
+    ['friendId' => $friendId]
+  );
 
-  $res = $dbLink->select($query, $param);
+  $res = ['messages' => $messages, 'friend' => $friendData[0]];
 } catch (PDOException $e) {
   $error = $e->getMessage();
 }
