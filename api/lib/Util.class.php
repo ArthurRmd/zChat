@@ -1,12 +1,13 @@
 <?php
 
 class Util {
-  // Check if the user is logged in
-  public static function checkLoggedInAPI()
+  // Check if the user is logged in. $shouldBe = page require login
+  public static function checkLoggedInAPI($shouldBe = true)
   {
-    if (!(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'])) {
-      http_response_code(403);
-      exit();
+    if ($_SESSION['loggedIn'] !== $shouldBe) {
+      $httpCode = 401;
+      $error = 'You need to be logged '.($shouldBe ? 'in' : 'out').' to use this endpoint.';
+      require __DIR__.'/../controllers/error.php';
     }
   }
 

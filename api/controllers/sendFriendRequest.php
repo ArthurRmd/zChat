@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] !== $requestType) {
 }
 
 // Check if the body of the request contains the needed data
-if (!$json || !empty($json['toFriendId'])) {
+if (!$json || empty($json['toFriendId'])) {
   http_response_code(400);
   exit();
 }
@@ -26,7 +26,7 @@ if (!$json || !empty($json['toFriendId'])) {
 $userId = $_SESSION['user']['id'];
 $toFriendId = $json['toFriendId'];
 
-require __DIR__.'/../models/insertFriendRequest.php';
+require __DIR__.'/../models/sendFriendRequest.php';
 
 // The database returned an error
 if (isset($error))
