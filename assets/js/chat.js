@@ -39,7 +39,7 @@ new Vue({
     async fetchMessages() {
       const friendId = getQueryString('friendId')
       if (!friendId) {
-        // Need "friendId" in URL parameter
+        // Need 'friendId' in URL parameter
         this.loading = false
         return this.setNotif('error', 'No friend ID was specified.')
       }
@@ -61,50 +61,29 @@ new Vue({
 
 Vue.config.devtools = true
 
-<<<<<<< HEAD
 $(document).ready(function () {
-  $(".btn").click(function () {
-
-
-    console.log("clique")
-
+  $('.btn').click(function () {
+    console.log('clique')
 
     $('.sidebar').sidebar('setting', {
       dimPage             : false,
       closable            : false,
       transition          : 'overlay',
-      mobileTransition    : 'overlay'})
-    .sidebar('toggle');
+      mobileTransition    : 'overlay'
+    })
+    .sidebar('toggle')
 
-    
-
-
-    if(!$('.detect').hasClass('visible')){
-      $( ".test" ).addClass( "espace-gauche" );
-      $(".zone-texte").css('width','calc(100vw - 30px - 260px)')
-      $(".zone-texte").css('left','270px')
+    if(!$('.detect').hasClass('visible')) {
+      $('.test').addClass( 'espace-gauche' )
+      $('.zone-texte').css('width','calc(100vw - 30px - 260px)')
+      $('.zone-texte').css('left','270px')
     }
-    else{
-      $( ".test" ).removeClass( "espace-gauche");
-      $(".zone-texte").css('width','calc(100vw - 30px)')
-      $(".zone-texte").css('left','10px')
+    else {
+      $('.test').removeClass( 'espace-gauche')
+      $('.zone-texte').css('width','calc(100vw - 30px)')
+      $('.zone-texte').css('left','10px')
     }
-
-
-    });
-
-    
-
-
-=======
-$(document).ready(function() {
-  $('.btn').click(function() {
-    console.log('clique')
-    $('.sidebar')
-      .sidebar('setting', 'transition', 'overlay')
-      .sidebar('toggle')
   })
->>>>>>> 38de13cfe987547565de0c8337e466d3badbca7c
 })
 
 function ajax() {
