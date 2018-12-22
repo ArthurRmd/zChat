@@ -20,115 +20,30 @@
 </head>
 
 <body class="pushable">
-  <div id="app" class="detect ui sidebar inverted vertical menu">
+  <div class="detect ui sidebar inverted vertical menu">
     <div style="color:white">
       <button class="ui inverted button">Log Out</button>
-      <button class="ui inverted button">Ajouter ami </button>
+      <button class="ui inverted button ">Ajouter ami </button>
       <a class="item">
         <img class="avatar" src="./assets/img/logo.jpg" alt="">
         <p class="p-avatar">Arthur Remond</p>
       </a>
     </div>
-    <a class="item">
-      2
-    </a>
-    <a class="item">
-      3
-    </a>
-    <a class="item">
-      3
-    </a>
-    <a class="item">
-      3
-    </a>
-    <a class="item">
-      3
-    </a>
-    <a class="item">
-      3
-    </a>
-    <a class="item">
-      3
-    </a>
-    <a class="item">
-      3
-    </a>
-    <a class="item">
-      3
-    </a>
-    <a class="item">
-      3
-    </a>
-    <a class="item">
-      3
-    </a>
-    <a class="item">
-      3
-    </a>
-    <a class="item">
-      3
-    </a>
-    
   </div>
-  <div class="pusher">
+  <div id="app" class="pusher">
     <div class="test zone-message">
       <button class="ui icon button btn">
         <i class="bars icon"></i>
       </button>
 
       <div class="msg">
-        <div class="message-externe message">
-          <p class="texte-message-externe">Voici un msg</p>
+        <div v-for="(aMessage, index) in messages"
+        :key="'msg' + index"
+        :class="{ 'message-externe': aMessage.sender === chatFriend.id }"
+        class="message"
+        >
+          <p>{{ aMessage.content }}</p>
         </div>
-
-        <div class="message-externe message">
-          <p class="texte-message-externe">Voici un msg</p>
-        </div>
-          
-        <div class="message">
-          <p class="texte-message">Voici un msg</p>
-        </div>
-
-        <div class="message-externe message">
-          <p class="texte-message-externe">Voici un msg</p>
-        </div>
-
-        <div class="message-externe message">
-          <p class="texte-message-externe">Voici un msg</p>
-        </div>
-
-          
-        <div class="message">
-          <p class="texte-message-externe">Voici un msg</p>
-        </div>
-
-
-        <div class="message-externe message">
-          <p class="texte-message-externe">Voici un msg</p>
-        </div>
-
-        <div class="message-externe message">
-          <p class="texte-message-externe">Voici un msg</p>
-        </div>
-
-          
-        <div class="message">
-          <p class="texte-message">Voici un msg</p>
-        </div>
-
-        <div class="message-externe message">
-          <p class="texte-message-externe">Voici un msg</p>
-        </div>
-
-        <div class="message-externe message">
-          <p class="texte-message-externe">Voici un msg</p>
-        </div>
-
-          
-        <div class="message">
-          <p class="texte-message-externe">Voici un msg</p>
-        </div>
-      </div>
         
       <button class="big circular ui icon button btn-envoi">
         <i class="paper plane outline icon"></i>
@@ -143,7 +58,7 @@
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
-  <script src="./assets/js/chat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js" type="application/javascript"></script>
+  <script src="./assets/js/chat.js" type="application/javascript"></script>
 </body>
 </html>

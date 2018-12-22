@@ -8,25 +8,33 @@ const getQueryString = key => new URLSearchParams(window.location.search).get(ke
 const isValidHttpCode = fetchObj =>
   fetchObj.status && fetchObj.status >= 200 && fetchObj.status <= 299
 
-new Vue({
+const getError = async res => {
+  v.loading = false
+  const { error = 'The server returned an error.' } = await res.json().catch(e => ({}))
+  return { type: 'negative', error }
+}
+
+const v = new Vue({
   el: '#app',
   data() {
     return {
       loading: true,
       user: null,
-      friend: null,
+      friends: [{ pseudo: 'bonjour1' }, { pseudo: 'bonjour2' }],
+      chatFriend: null,
       messages: [],
       notif: null
     }
   },
-  mounted() {
+  async mounted() {
     // Check the user is logged in
     if (!checkLoggedIn()) return (window.location.href = 'connexion.html')
 
     // Load current user data from cache
     this.user = localStorage.getItem('user')
 
-    this.fetchMessages()
+    await Promise.all([this.fetchMessages(), this.fetchFriends()])
+    this.loading = false
   },
   methods: {
     // Set the notification
@@ -45,16 +53,29 @@ new Vue({
       }
 
       let res = await fetch(`${API_PREFIX}getMessage&friendId=${friendId}`)
-      if (!isValidHttpCode(res)) {
-        // The server returned an error
-        this.loading = false
-        const { error = 'The server returned an error.' } = await res.json().catch(e => ({}))
-        return this.setNotif('error', error)
-      }
+
+      // The server returned an error
+      if (!isValidHttpCode(res)) return getError(res)
+
       res = await res.json()
-      this.friend = res.friend
+      this.chatFriend = res.friend
       this.messages = res.messages
       this.loading = false
+    },
+
+    // Get the friends from the API
+    async fetchFriends() {
+      let res = await fetch(`${API_PREFIX}getFriend`)
+
+      // The server returned an error
+      if (!isValidHttpCode(res)) return getError(res)
+
+      res = await res.json()
+      this.friends = res.friends
+
+      this.friends.forEach(friend => {
+        $('.sidebar').append('<a class="item">' + friend.pseudo + '</a>')
+      })
     }
   }
 })
