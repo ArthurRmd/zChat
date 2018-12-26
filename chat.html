@@ -3,25 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Projet Tutoré</title>
+  <title>zChat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- JQuery -->
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js"
-    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-    crossorigin="anonymous"></script>
-
-  <!-- Semantic UI -->
   <link rel="stylesheet" href="./assets/Semantic-UI/semantic.min.css" />
-  <script src="./assets/Semantic-UI/semantic.min.js"></script>      
-
-  <!-- Fichier Perso -->
   <link rel="stylesheet" type="text/css" media="screen" href="./assets/css/page.css" />
 </head>
 
 <body class="pushable">
   <div class="detect ui sidebar inverted vertical menu">
-    <div style="color:white">
+    <div id="sidebarContent" style="color:white">
       <button class="ui inverted button">Log Out</button>
       <button class="ui inverted button ">Ajouter ami </button>
       <a class="item">
@@ -30,8 +21,11 @@
       </a>
     </div>
   </div>
-  <div id="app" class="pusher">
-    <div class="test zone-message">
+  <div id="app" class="ui pusher">
+    <div v-if="loading" class="ui active dimmer">
+      <div class="ui text loader">Loading ...</div>
+    </div>
+    <div v-else class="test zone-message">
       <button class="ui icon button btn">
         <i class="bars icon"></i>
       </button>
@@ -58,7 +52,9 @@
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js" type="application/javascript"></script>
-  <script src="./assets/js/chat.js" type="application/javascript"></script>
+  <script src="./assets/js/vue.min.js"></script>
+  <script src="./assets/js/jquery-3.3.1.min.js"></script>
+  <script src="./assets/Semantic-UI/semantic.min.js"></script>
+  <script src="./assets/js/chat.js"></script>
 </body>
 </html>
