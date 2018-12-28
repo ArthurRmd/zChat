@@ -1,66 +1,69 @@
-.test{
+#activateSidebar {
+  position: absolute;
+}
+
+#msg-area {
+  margin: 0 auto;
+  left: 0px;
+  width: calc(100vw - 30px);
   height: 100vh;
   position: relative;
+  transition-duration: 0.5s;
 }
 
-.zone-message{
-  padding: 0 10px 0 10px;
-  
-}
-
-.zone-texte{
-
-  position: fixed!important;
+#textField {
+  left: 0px;
   bottom: 0px;
-  left: 10px;
-  width: calc(100vw - 30px );
   padding-bottom: 10px;
   background-color: white;
+  transition-duration: 0.5s;
 }
 
-.btn-envoi{
-  position: fixed!important;
-  z-index: 101;
+#sendButton {
+  position: absolute !important;
+  z-index: 99;
   bottom: 52px;
   right: 30px; 
 }
 
 
-.message{
+.msg-list {
+  height: calc(100vh - 105px);
+  overflow: auto;
+}
+
+.msg-bubble {
   width: 100%;
   display: flex;
   justify-content: flex-start;
   margin-top: 20px;
   padding: 0px 30px;
-  
-  
 }
 
-.message-externe{
-  justify-content: flex-end;
-  
-}
-
-.message-externe p {
-  background-color: rgba(101, 172, 101, 0.89)!important;
-  
-  
-}
-
-.message p{
+.msg-bubble p {
   display: inline;
   padding: 15px;
-  background-color: rgba(55, 149, 236, 0.89);
+  background-color: #3795ece3;
   border-radius: 25px;
-  
 }
 
+.msg-incoming {
+  justify-content: flex-end;
+}
 
-.message p {
+.msg-incoming p {
+  background-color: #65ac65e3 !important;
+}
+
+.msg-bubble p {
   color:white;
 }
 
-.msg{
-  height: calc(100vh - 100px);
-  overflow: auto;
+
+.profile-pseudo {
+  text-align: center !important;
+}
+.profile-actions {
+  display: block !important;
+  margin: 0 auto 10px auto !important;
 }

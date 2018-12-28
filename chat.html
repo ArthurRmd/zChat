@@ -10,43 +10,53 @@
   <link rel="stylesheet" type="text/css" media="screen" href="./assets/css/page.css" />
 </head>
 
-<body class="pushable">
-  <div class="detect ui sidebar inverted vertical menu">
-    <div id="sidebarContent" style="color:white">
-      <button class="ui inverted button">Log Out</button>
-      <button class="ui inverted button ">Ajouter ami </button>
-      <a class="item">
-        <img class="avatar" src="./assets/img/logo.jpg" alt="">
-        <p class="p-avatar">Arthur Remond</p>
-      </a>
+<body>
+  <div id="app">
+    <div class="detect ui sidebar inverted vertical menu">
+      <div id="sidebarContent">
+        <a class="item profile-pseudo">
+          <p class="p-avatar">Arthur Remond</p>
+        </a>
+        <button class="ui inverted button profile-actions">Add a friend</button>
+        <button class="ui inverted button profile-actions">Log out</button>
+      </div>
     </div>
-  </div>
-  <div id="app" class="ui pusher">
-    <div v-if="loading" class="ui active dimmer">
-      <div class="ui text loader">Loading ...</div>
-    </div>
-    <div v-else class="test zone-message">
-      <button class="ui icon button btn">
-        <i class="bars icon"></i>
-      </button>
 
-      <div class="msg">
-        <div v-for="(aMessage, index) in messages"
-        :key="'msg' + index"
-        :class="{ 'message-externe': aMessage.sender === chatFriend.id }"
-        class="message"
-        >
-          <p>{{ aMessage.content }}</p>
+    <div class="ui pusher">
+      <div v-if="loading" class="ui active dimmer">
+        <div class="ui text loader">Loading ...</div>
+      </div>
+
+      <div v-else-if="loadingError">
+        <div class="ui message" :class="[ notif ? notif.type : '' ]">
+          <div class="header">Error</div>
+          <p>{{ notif.msg }}</p>
+        </div>
+      </div>
+
+      <div v-else id="msg-area">
+        <button @click="toggleSidebar" id="activateSidebar" class="ui icon button">
+          <i class="bars icon"></i>
+        </button>
+
+        <div class="msg-list">
+          <div v-for="(aMessage, index) in messages"
+          :key="'msg' + index"
+          class="msg-bubble"
+          :class="{ 'msg-incoming': aMessage.sender === chatFriend.id }"
+          >
+            <p>{{ aMessage.content }}</p>
+          </div>
         </div>
         
-      <button class="big circular ui icon button btn-envoi">
-        <i class="paper plane outline icon"></i>
-      </button>
-
-      <div class="ui form zone-texte">
-        <div class="field">
-          <label>Message</label>
-          <textarea rows="2"></textarea>
+        <button id="sendButton" class="big circular ui icon button">
+          <i class="paper plane outline icon"></i>
+        </button>
+        <div id="textField" class="ui form">
+          <div class="field">
+            <label>Message</label>
+            <textarea rows="2"></textarea>
+          </div>
         </div>
       </div>
     </div>

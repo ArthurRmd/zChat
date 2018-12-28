@@ -6,7 +6,7 @@ class Util {
   {
     if ($_SESSION['loggedIn'] !== $shouldBe) {
       $httpCode = 401;
-      $error = 'You need to be logged '.($shouldBe ? 'in' : 'out').' to use this endpoint.';
+      $error = 'You need to be logged '.($shouldBe ? 'in' : 'out').' to use the service.';
       require __DIR__.'/../controllers/error.php';
     }
   }
