@@ -20,22 +20,16 @@ new Vue({
       chatFriend: null,
       messages: [],
       newMessage: null,
-      notif: null
+      notif: null,
+
+      autoRefreshMessagesToggle: true
     }
   },
 
+  // Function triggered on page load
   async mounted() {
     // Check the user is logged in
     if (!checkLoggedIn()) return (window.location.href = 'login.html')
-
-    // Load the sidebar
-    $('.sidebar').sidebar({
-      context: '#app',
-      dimPage: false,
-      closable: false,
-      transition: 'overlay',
-      mobileTransition: 'overlay'
-    })
 
     // Load current user data from cache
     this.user = localStorage.getItem('user')
@@ -43,13 +37,33 @@ new Vue({
     // Fetch all data from the API
     await Promise.all([this.fetchMessages(), this.fetchFriends()])
 
-    // Fetchin OK, stop loading screen and scroll to the last message
+    // Fetching OK
     this.loading = false
+
+    // Wait for DOM update (component need to be rendered)
+    Vue.nextTick().then(() => {
+      // Load the sidebar
+      $('.sidebar').sidebar({
+        context: '#app',
+        dimPage: false,
+        closable: false,
+        transition: 'overlay',
+        mobileTransition: 'overlay'
+      })
+      // Load the 'refresh messages' toggle button
+      $('.ui.checkbox').checkbox()
+    })
+
+    // Stop loading screen and scroll to the last message
     this.scrollChat()
+
+    // Start the auto-refresh cycle (it will check if setting is on)
+    // Refresh the messages every 3 seconds
+    window.setInterval(this.autoRefreshMessages, 3000)
   },
 
   methods: {
-    // show/hide the sidebar
+    // Show/Hide the sidebar
     toggleSidebar() {
       $('.sidebar').sidebar('toggle')
       $('#msg-area').css('left', $('.detect').hasClass('visible') ? '10px' : '270px')
@@ -66,9 +80,15 @@ new Vue({
       // Wait for DOM update (component need to be rendered)
       Vue.nextTick().then(() => {
         if (this.loading || this.loadingError) return
+
         const msgList = document.querySelector('.msg-list')
         msgList.scrollTop = msgList.scrollHeight
       })
+    },
+
+    // Auto refresh messages if toggle 'autoRefreshMessagesToggle' is on
+    autoRefreshMessages() {
+      if (this.autoRefreshMessagesToggle) this.fetchMessages()
     },
 
     // mutate 'notif' with an error sent by the server
