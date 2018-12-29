@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Connexion</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="./assets/Semantic-UI/semantic.min.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="./assets/css/login-register.css" />
+</head>
+
+<body>
+  <div id="app">
+    <h1 class="titre">Connexion</h1>
+    
+    <form  class="ui form test" >
+      <div class="field espace-field" :class="{ error: pseudoError }" id="id">
+        <label>Pseudo</label>
+        <div class="ui left icon input">
+          <input type="text" placeholder="" v-model="pseudo">
+          <i class="user icon"></i>
+        </div>
+
+        <div class="position-gauche">
+          <div class="ui pointing red basic label" v-if="msgPseudoError">
+            {{ textePseudoError }}
+          </div>
+          <div class="ui pointing label" v-if="msgPseudo">
+            {{ textePseudo }}
+          </div>
+        </div>
+      </div>
+
+      <div class="field espace-field" :class="{ error: mdpError }" id="mdp">
+        <label>Mot de passe</label>
+        <div class="ui left icon input">
+          <input type="password" placeholder="" v-model="mdp">
+          <i class="lock icon"></i>
+        </div>
+
+        <div class="position-gauche">
+          <div class="ui pointing red basic label" v-if="msgMdpError">
+            {{ texteMdpError }}
+          </div>
+          <div class="ui pointing label" v-if="msgMdp">
+            {{ texteMdp }}
+          </div>
+        </div>
+      </div>
+
+      <div class="field check">
+        <div class="ui checkbox">
+          <input type="checkbox" tabindex="0" class="hidden" v-model="check" id="checkConnected">
+          <label>Voulez vous retenir l'identifiant</label>
+        </div>
+      </div>
+    </form>
+
+    <button class="ui button btn-envoi" type="submit">Envoyer</button>
+  </div>
+
+  <script src="./assets/js/vue.min.js"></script>
+  <script src="./assets/js/jquery-3.3.1.min.js"></script>
+  <script src="./assets/js/login.js"></script>
+  <script src="./assets/js/app.js"></script>
+</body>
+</html>

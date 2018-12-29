@@ -25,7 +25,7 @@ if (!$json || empty($json['friendId']) || empty($json['content'])) {
 
 $userId = $_SESSION['user']['id'];
 $friendId = $json['friendId'];
-$content = $json['content'];
+$content = trim($json['content']);
 
 // Convert emojis
 $content = Util::convertEmoji($content);

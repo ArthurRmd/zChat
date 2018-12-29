@@ -19,13 +19,14 @@ new Vue({
       friends: [],
       chatFriend: null,
       messages: [],
+      newMessage: null,
       notif: null
     }
   },
 
   async mounted() {
     // Check the user is logged in
-    if (!checkLoggedIn()) return (window.location.href = 'connexion.html')
+    if (!checkLoggedIn()) return (window.location.href = 'login.html')
 
     // Load the sidebar
     $('.sidebar').sidebar({
@@ -53,6 +54,7 @@ new Vue({
       $('.sidebar').sidebar('toggle')
       $('#msg-area').css('left', $('.detect').hasClass('visible') ? '10px' : '270px')
     },
+
     // Set the notification
     setNotif(type, msg) {
       this.notif = { type, msg }
@@ -63,6 +65,7 @@ new Vue({
     scrollChat() {
       // Wait for DOM update (component need to be rendered)
       Vue.nextTick().then(() => {
+        if (this.loading || this.loadingError) return
         const msgList = document.querySelector('.msg-list')
         msgList.scrollTop = msgList.scrollHeight
       })
@@ -72,6 +75,11 @@ new Vue({
     async setServerError(res) {
       const { error = 'The server returned an error.' } = await res.json().catch(e => ({}))
       this.notif = { type: 'negative', msg: error }
+    },
+
+    // mutate 'notif' with an error sent by the server at page loading
+    async setServerLoadingError(res) {
+      await this.setServerError(res)
       this.loading = false
       this.loadingError = true
     },
@@ -91,11 +99,11 @@ new Vue({
       let res = await fetch(`${API_PREFIX}getMessage&friendId=${friendId}`)
 
       // The server returned an error
-      if (!isValidHttpCode(res)) return this.setServerError(res)
+      if (!isValidHttpCode(res)) return this.setServerLoadingError(res)
 
       res = await res.json()
-      this.chatFriend = res.friend
-      this.messages = res.messages
+      if (this.chatFriend !== res.friend) this.chatFriend = res.friend
+      if (this.messages !== res.messages) this.messages = res.messages
     },
 
     // Get the friends from the API
@@ -105,7 +113,7 @@ new Vue({
       let res = await fetch(`${API_PREFIX}getFriend`)
 
       // The server returned an error
-      if (!isValidHttpCode(res)) return this.setServerError(res)
+      if (!isValidHttpCode(res)) return this.setServerLoadingError(res)
 
       res = await res.json()
       this.friends.forEach(friend => {
@@ -113,6 +121,31 @@ new Vue({
           `<a class="item" href="chat.html?friendId=${friend.id}">${friend.pseudo}</a>`
         )
       })
+    },
+
+    // Send the new message
+    async sendMessage() {
+      // Check the message is not empty
+      if (!this.newMessage || this.newMessage.trim() === '') return
+
+      // Send the new message
+      const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          friendId: this.chatFriend.id,
+          content: this.newMessage.trim()
+        })
+      }
+      let res = await fetch(`${API_PREFIX}sendMessage`, options)
+
+      // The server returned an error
+      if (!isValidHttpCode(res)) return this.setServerError(res)
+
+      // Refresh the messages list
+      await this.fetchMessages()
+      this.scrollChat()
+      this.newMessage = null
     }
   }
 })
