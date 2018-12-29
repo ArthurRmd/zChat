@@ -30,7 +30,7 @@ class Database {
       .':host='.$this->dbCredentials['host']
       .';port='.$this->dbCredentials['port']
       .';dbname='.$this->dbCredentials['dbName']
-      .';charset=utf8';
+      .';charset=utf8mb4';
     $username = $this->dbCredentials['username'];
     $password = $this->dbCredentials['password'];
     $conn = new PDO($dbInfos, $username, $password);
