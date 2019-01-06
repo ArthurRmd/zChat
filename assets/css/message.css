@@ -67,3 +67,12 @@
   display: block !important;
   margin: 0 auto 10px auto !important;
 }
+
+.banned span {
+  color: #8e8e8e !important;
+  text-decoration: line-through !important;
+}
+
+.banned .bannedText {
+  text-decoration: none !important;
+}

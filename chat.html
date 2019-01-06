@@ -24,8 +24,10 @@
         <a v-for="(aFriend, index) in friends" :key="'friend' + index"
         :href="'chat.html?friendId=' + aFriend.id"
         class="item"
+        :class="{ banned: aFriend.isBanned }"
         >
-          {{ aFriend.pseudo }}
+          <span>{{ aFriend.pseudo }}</span>
+          <span class="bannedText">{{ aFriend.isBanned ? '(banned)' : '' }}</span>
         </a>
       </div>
     </div>

@@ -31,7 +31,7 @@ $content = trim($json['content']);
 $content = Util::convertEmoji($content);
 
 require __DIR__.'/../models/sendMessage.php';
-  
+
 // The database returned an error
 if (isset($error))
   require __DIR__.'/error.php';

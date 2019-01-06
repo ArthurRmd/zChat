@@ -17,7 +17,7 @@ try {
   // Check users are friends
   $query = 'SELECT friend_accept FROM friend
   WHERE (user_asker = :userId AND user_asked = :friendId)
-  OR (user_asker = :userId2 AND user_asked = :friendId2)';
+  OR (user_asked = :userId2 AND user_asker = :friendId2)';
 
   $param = [
     'userId' => $userId,
@@ -27,7 +27,7 @@ try {
   ];
   $res = $dbLink->select($query, $param);
 
-  if (count($res) === 0 || $res[0]['friend_accept']) {
+  if (count($res) === 0 || !$res[0]['friend_accept']) {
     // Error : Users are not friends
     $httpCode = 403;
     $error = 'You are not friend with this user.';
