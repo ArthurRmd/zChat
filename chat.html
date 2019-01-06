@@ -15,10 +15,18 @@
     <div class="detect ui sidebar inverted vertical menu">
       <div id="sidebarContent">
         <a class="item profile-pseudo">
-          <p class="p-avatar">Arthur Remond</p>
+          <p class="p-avatar">{{ user && user.pseudo }}</p>
         </a>
+
         <button class="ui inverted button profile-actions">Add a friend</button>
         <button class="ui inverted button profile-actions">Log out</button>
+
+        <a v-for="(aFriend, index) in friends" :key="'friend' + index"
+        :href="'chat.html?friendId=' + aFriend.id"
+        class="item"
+        >
+          {{ aFriend.pseudo }}
+        </a>
       </div>
     </div>
 
@@ -55,7 +63,8 @@
 
         <div class="inline field">
           <div class="ui toggle checkbox">
-            <input type="checkbox" v-model="autoRefreshMessagesToggle" tabindex="0" class="hidden">
+            <input type="checkbox" v-model="autoRefreshMessagesToggle" @change="refreshMessagesToggled"
+            tabindex="0" class="hidden" />
             <label>Auto-refresh messages</label>
           </div>
         </div>

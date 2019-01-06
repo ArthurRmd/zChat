@@ -34,6 +34,9 @@ new Vue({
     // Load current user data from cache
     this.user = localStorage.getItem('user')
 
+    // Load autoRefreshMessagesToggle from cache
+    this.autoRefreshMessagesToggle = JSON.parse(localStorage.getItem('autoRefreshMessages') || true)
+
     // Fetch all data from the API
     await Promise.all([this.fetchMessages(), this.fetchFriends()])
 
@@ -91,6 +94,11 @@ new Vue({
       if (this.autoRefreshMessagesToggle) this.fetchMessages()
     },
 
+    // The "Auto-refresh messages" toggle was clicked, save it in cache
+    refreshMessagesToggled(event) {
+      localStorage.setItem('autoRefreshMessages', event.srcElement.checked)
+    },
+
     // mutate 'notif' with an error sent by the server
     async setServerError(res) {
       const { error = 'The server returned an error.' } = await res.json().catch(e => ({}))
@@ -136,11 +144,7 @@ new Vue({
       if (!isValidHttpCode(res)) return this.setServerLoadingError(res)
 
       res = await res.json()
-      this.friends.forEach(friend => {
-        $('#sidebarContent').append(
-          `<a class="item" href="chat.html?friendId=${friend.id}">${friend.pseudo}</a>`
-        )
-      })
+      this.friends = res
     },
 
     // Send the new message
