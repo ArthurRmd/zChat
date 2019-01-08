@@ -22,7 +22,14 @@ new Vue({
       newMessage: null,
       notif: null,
 
-      autoRefreshMessagesToggle: true
+      autoRefreshMessagesToggle: true,
+
+      //Variable -> addFriend
+      addFriend: {
+        seeError: false,
+        textID: ""
+      }
+
     }
   },
 
@@ -70,6 +77,17 @@ new Vue({
     toggleSidebar() {
       $('.sidebar').sidebar('toggle')
       $('#msg-area').css('left', $('.detect').hasClass('visible') ? '10px' : '270px')
+    },
+
+    watchAddFriend(){
+      $('.ui.modal').modal('show')
+    },
+
+    addFriend(){
+      if( this.addFriend.textID !== ""){
+        //appel au controller
+        alert("appel au controller addFriend : ID ->" + this.addFriend.textID )
+      }
     },
 
     // Set the notification
@@ -175,3 +193,4 @@ new Vue({
 })
 
 Vue.config.devtools = true
+

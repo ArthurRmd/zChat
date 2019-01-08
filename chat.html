@@ -18,8 +18,34 @@
           <p class="p-avatar">{{ user && user.pseudo }}</p>
         </a>
 
-        <button class="ui inverted button profile-actions">Add a friend</button>
+        <button @click="watchAddFriend" class="ui inverted button profile-actions btn-add">Add a friend</button>
         <button class="ui inverted button profile-actions">Log out</button>
+
+        <div class="ui modal">
+          <div class="header"> Add Friend</div>
+          <div class="content">
+           
+            <div class="ui form error">
+              <div class="field">
+                <label> Enter your friend's ID:</label>
+                <input type="number"  placeholder="ex: 46" V-model.number="textID">
+              </div>
+              <div class="ui error message" v-if="seeError">
+                <div class="header">ID not found </div>
+                <p>We have failed to find your friend with this ID.</p>
+              </div>
+              
+              <div class="text-cente">
+                <button @click="addFriend" class="ui basic button ">
+                  <i class="icon user"></i>
+                  Add Friend
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
 
         <a v-for="(aFriend, index) in friends" :key="'friend' + index"
         :href="'chat.html?friendId=' + aFriend.id"
