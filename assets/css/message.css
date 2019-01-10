@@ -76,3 +76,8 @@
 .banned .bannedText {
   text-decoration: none !important;
 }
+
+.notif {
+  width: 50vw;
+  margin: 0 auto;
+}

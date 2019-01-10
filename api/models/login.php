@@ -13,7 +13,7 @@ try {
   if (count($res) === 0) {
     // Error : User not found
     $error = "Invalid username or password";
-    $httpCode = 409;
+    $httpCode = 401;
     return;
   }
 
@@ -29,7 +29,7 @@ try {
   if (!password_verify($password, $res['password'])) {
     // Error : Bad password
     $error = "Invalid username or password";
-    $httpCode = 409;
+    $httpCode = 401;
     return;
   }
 

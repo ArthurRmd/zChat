@@ -16,26 +16,24 @@ var v = new Vue({
     mdpError: false,
 
     msgMdpError: false,
-    texteMdpError: "Le mot de passe n'est pas bon",
+    texteMdpError: '',
     msgMdp: false,
-    texteMdp: 'Veuillez remplir le champs',
-
-    check: true
+    texteMdp: 'Veuillez remplir le champs'
   }
 })
 Vue.config.devtools = true
 
 $(document).ready(function() {
-  $('.ui.checkbox').checkbox()
+  // Check if user is already logged in
+  if (checkLoggedIn()) return (window.location.href = 'chat.html')
 
   $('.btn-envoi').click(function() {
-    if (!v.msgPseudoError && !v.msgMdp) {
-      connexion_bdd().then(afterConnect)
-    }
+    if (!v.msgPseudoError && !v.msgMdp) connexion_bdd()
   })
 
   $('#pseudo').focusout(function() {
-    if (!verifLongueur(v.pseudo, 3, 15)) {
+    if (!verifLongueur(v.pseudo, 3, 255)) {
+      v.textePseudoError = 'Invalid pseudo, 3 chars minimum.'
       v.msgPseudoError = true
       v.pseudoError = true
     } else {
@@ -45,7 +43,8 @@ $(document).ready(function() {
   })
 
   $('#mdp').focusout(function() {
-    if (!verifPassword(v.mdp)) {
+    if (!verifLongueur(v.mdp, 4, 255)) {
+      v.texteMdpError = 'Invalid password, 4 chars minimum.'
       v.msgMdpError = true
       v.mdpError = true
     } else {
@@ -56,29 +55,38 @@ $(document).ready(function() {
 })
 
 function connexion_bdd() {
-  var content = { pseudo: v.pseudo, mdp: v.mdp } //object
+  // Check pseudo / password are not empty
+  if (!v.pseudo || v.pseudo === '' || !v.mdp || v.mdp === '') return
 
-  return fetch('../../api/controllers/connexion.php', {
+  // Send the login request
+  return fetch(`${API_PREFIX}login`, {
     method: 'POST',
     headers: { 'Content-type': 'application/json' },
-    body: JSON.stringify(content)
+    body: JSON.stringify({
+      pseudo: v.pseudo,
+      password: v.mdp
+    })
   })
-    .then(res => res.json())
-    .then(res => {
-      console.log(res)
+    .then(async res => {
+      if (!isValidHttpCode(res)) {
+        // The server returned an error, stop the login process
+        const { error = 'The server returned an error.' } = await res.json().catch(_ => ({}))
+        v.texteMdpError = error
+        v.msgMdpError = true
+        return Promise.reject(error)
+      }
       return res
     })
+    .then(res => res.json())
+    .then(afterConnect)
+    .catch(console.error)
 }
 
+// Function called when login worked
 function afterConnect(res) {
-  if (res == 'connecter') {
-    location.href = 'page.php'
-  } else if (res == 'mdp_pas_bon' || res == 'pseudo_pas_bon') {
-    v.texteMdpError = "L'addresse e-mail ou le mot de passe n'est pas bonne"
-    v.msgMdpError = true
-  } else if (res == false) {
-    alert('Merci de remplir')
-  }
-  v.mdpError = true
-  v.PseudoError = true
+  if (!res) return
+
+  localStorage.setItem('loggedIn', true)
+  localStorage.setItem('user', JSON.stringify(res))
+  window.location.href = 'chat.html'
 }

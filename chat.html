@@ -18,27 +18,27 @@
           <p class="p-avatar">{{ user && user.pseudo }}</p>
         </a>
 
-        <button @click="watchAddFriend" class="ui inverted button profile-actions btn-add">Add a friend</button>
-        <button class="ui inverted button profile-actions">Log out</button>
+        <button @click="showAddFriendModal" class="ui inverted button profile-actions btn-add">Add a friend</button>
+        <button @click="logout" class="ui inverted button profile-actions">Log out</button>
 
-        <div class="ui modal">
-          <div class="header"> Add Friend</div>
+        <div class="ui modal" id="addFriend">
+          <div class="header">Add Friend</div>
           <div class="content">
            
             <div class="ui form error">
               <div class="field">
-                <label> Enter your friend's ID:</label>
-                <input type="number"  placeholder="ex: 46" V-model.number="textID">
+                <label>Enter your friend's ID :</label>
+                <input type="number"  placeholder="Example : 46" v-model.number="addFriend.toAddId">
               </div>
-              <div class="ui error message" v-if="seeError">
-                <div class="header">ID not found </div>
-                <p>We have failed to find your friend with this ID.</p>
+              <div v-if="addFriend.error.visible" class="ui error message">
+                <div class="header">Error</div>
+                <p>{{ addFriend.error.msg }}</p>
               </div>
               
               <div class="text-cente">
-                <button @click="addFriend" class="ui basic button ">
+                <button @click="sendFriendRequest" class="ui basic button">
                   <i class="icon user"></i>
-                  Add Friend
+                  Send friend request
                 </button>
               </div>
 
@@ -75,32 +75,41 @@
           <i class="bars icon"></i>
         </button>
 
-        <div class="msg-list">
-          <div v-for="(aMessage, index) in messages"
-          :key="'msg' + index"
-          class="msg-bubble"
-          :class="{ 'msg-incoming': aMessage.sender === chatFriend.id }"
-          >
-            <p>{{ aMessage.content }}</p>
-          </div>
-        </div>
-        
-        <button id="sendButton" @click="sendMessage" class="big circular ui icon button">
-          <i class="paper plane outline icon"></i>
-        </button>
-
-        <div class="inline field">
-          <div class="ui toggle checkbox">
-            <input type="checkbox" v-model="autoRefreshMessagesToggle" @change="refreshMessagesToggled"
-            tabindex="0" class="hidden" />
-            <label>Auto-refresh messages</label>
+        <div v-if="notif" class="notif">
+          <div class="ui message" :class="[ notif.type ]">
+            <div class="header">Notification</div>
+            <p>{{ notif.msg }}</p>
           </div>
         </div>
 
-        <div id="textField" class="ui form">
-          <div class="field">
-            <label>Message</label>
-            <textarea v-model="newMessage" @keyup.enter="sendMessage" rows="2"></textarea>
+        <div v-if="chatFriend !== null">
+          <div class="msg-list">
+            <div v-for="(aMessage, index) in messages"
+            :key="'msg' + index"
+            class="msg-bubble"
+            :class="{ 'msg-incoming': aMessage.sender === chatFriend.id }"
+            >
+              <p>{{ aMessage.content }}</p>
+            </div>
+          </div>
+          
+          <button id="sendButton" @click="sendMessage" class="big circular ui icon button">
+            <i class="paper plane outline icon"></i>
+          </button>
+
+          <div class="inline field">
+            <div class="ui toggle checkbox">
+              <input type="checkbox" v-model="autoRefreshMessagesToggle" @change="refreshMessagesToggled"
+              tabindex="0" class="hidden" />
+              <label>Auto-refresh messages</label>
+            </div>
+          </div>
+
+          <div id="textField" class="ui form">
+            <div class="field">
+              <label>Message</label>
+              <textarea v-model="newMessage" @keyup.enter="sendMessage" rows="2"></textarea>
+            </div>
           </div>
         </div>
       </div>
@@ -110,6 +119,7 @@
   <script src="./assets/js/vue.js"></script>
   <script src="./assets/js/jquery-3.3.1.min.js"></script>
   <script src="./assets/Semantic-UI/semantic.min.js"></script>
+  <script src="./assets/js/app.js"></script>
   <script src="./assets/js/chat.js"></script>
 </body>
 </html>

@@ -1,13 +1,5 @@
 'use strict'
 
-const API_PREFIX = 'api/?controller='
-
-const checkLoggedIn = () => localStorage.getItem('loggedIn') == 'true'
-const getQueryString = key => new URLSearchParams(window.location.search).get(key)
-
-const isValidHttpCode = fetchObj =>
-  fetchObj.status && fetchObj.status >= 200 && fetchObj.status <= 299
-
 new Vue({
   el: '#app',
   data() {
@@ -16,7 +8,7 @@ new Vue({
       loadingError: false,
 
       user: null,
-      friends: [],
+      friends: null,
       chatFriend: null,
       messages: [],
       newMessage: null,
@@ -24,12 +16,13 @@ new Vue({
 
       autoRefreshMessagesToggle: true,
 
-      //Variable -> addFriend
       addFriend: {
-        seeError: false,
-        textID: ""
+        error: {
+          visible: false,
+          msg: null
+        },
+        toAddId: null
       }
-
     }
   },
 
@@ -39,7 +32,7 @@ new Vue({
     if (!checkLoggedIn()) return (window.location.href = 'login.html')
 
     // Load current user data from cache
-    this.user = localStorage.getItem('user')
+    this.user = JSON.parse(localStorage.getItem('user') || false)
 
     // Load autoRefreshMessagesToggle from cache
     this.autoRefreshMessagesToggle = JSON.parse(localStorage.getItem('autoRefreshMessages') || true)
@@ -49,6 +42,16 @@ new Vue({
 
     // Fetching OK
     this.loading = false
+
+    // Error message "No friend ID was specified."
+    if (this.notif && this.notif.msg === 'No friend ID was specified.') {
+      // Redirect to first friend in the list
+      if (this.friends === null) await this.fetchFriends()
+      if (this.friends.length > 0)
+        return (window.location.href = `chat.html?friendId=${this.friends[0].id}`)
+      // User has 0 friends, show a message.
+      this.setNotif('info', 'Start chatting by adding friends using the sidebar menu !')
+    }
 
     // Wait for DOM update (component need to be rendered)
     Vue.nextTick().then(() => {
@@ -73,20 +76,20 @@ new Vue({
   },
 
   methods: {
-    // Show/Hide the sidebar
+    // Show / Hide the sidebar
     toggleSidebar() {
       $('.sidebar').sidebar('toggle')
       $('#msg-area').css('left', $('.detect').hasClass('visible') ? '10px' : '270px')
     },
 
-    watchAddFriend(){
-      $('.ui.modal').modal('show')
+    showAddFriendModal() {
+      $('.ui.modal#addFriend').modal('show')
     },
 
-    addFriend(){
-      if( this.addFriend.textID !== ""){
+    sendFriendRequest() {
+      if (this.addFriend.toAddId) {
         //appel au controller
-        alert("appel au controller addFriend : ID ->" + this.addFriend.textID )
+        alert('appel au controller addFriend : ID ->' + this.addFriend.toAddId)
       }
     },
 
@@ -100,7 +103,7 @@ new Vue({
     scrollChat() {
       // Wait for DOM update (component need to be rendered)
       Vue.nextTick().then(() => {
-        if (this.loading || this.loadingError) return
+        if (this.loading || this.loadingError || !this.chatFriend) return
 
         const msgList = document.querySelector('.msg-list')
         msgList.scrollTop = msgList.scrollHeight
@@ -109,7 +112,8 @@ new Vue({
 
     // Auto refresh messages if toggle 'autoRefreshMessagesToggle' is on
     autoRefreshMessages() {
-      if (this.autoRefreshMessagesToggle) this.fetchMessages()
+      if (!this.loadingError && this.chatFriend && this.autoRefreshMessagesToggle)
+        this.fetchMessages()
     },
 
     // The "Auto-refresh messages" toggle was clicked, save it in cache
@@ -119,7 +123,7 @@ new Vue({
 
     // mutate 'notif' with an error sent by the server
     async setServerError(res) {
-      const { error = 'The server returned an error.' } = await res.json().catch(e => ({}))
+      const { error = 'The server returned an error.' } = await res.json().catch(_ => ({}))
       this.notif = { type: 'negative', msg: error }
     },
 
@@ -135,12 +139,8 @@ new Vue({
       if (this.loadingError) return
 
       const friendId = getQueryString('friendId')
-      if (!friendId) {
-        // Need 'friendId' in URL parameter
-        this.loading = false
-        this.loadingError = true
-        return this.setNotif('error', 'No friend ID was specified.')
-      }
+      // Need 'friendId' in URL parameter
+      if (!friendId) return this.setNotif('error', 'No friend ID was specified.')
 
       let res = await fetch(`${API_PREFIX}getMessage&friendId=${friendId}`)
 
@@ -188,9 +188,16 @@ new Vue({
       await this.fetchMessages()
       this.scrollChat()
       this.newMessage = null
+    },
+
+    // Disconnect from the app and the API
+    async logout() {
+      this.loading = true
+      localStorage.clear()
+      await fetch(`${API_PREFIX}disconnect`)
+      window.location.href = 'login.html'
     }
   }
 })
 
 Vue.config.devtools = true
-

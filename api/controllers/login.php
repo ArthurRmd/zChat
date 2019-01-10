@@ -32,10 +32,10 @@ require __DIR__.'/../models/login.php';
 if (isset($error))
   require __DIR__.'/error.php';
 
-
 $_SESSION['loggedIn'] = true;
 $_SESSION['user'] = $res;
+
 // Everything is fine, send the result
-echo json_encode(true);
+echo json_encode($res);
 
 ?>
