@@ -35,31 +35,18 @@ $(document).ready(function() {
   
 
   $('.btn-envoi').click(function() {
-    if (!v.pseudo) {
-      v.msgPseudoError = true
-    }
-
-    if (!v.mdp || !v.verifMdp) {
-      v.msgMdpError = true
-    }
-
-    if (v.check) {
-      if (!v.msgPseudoError && !v.msgMdpError) {
-        inscription()
-      }
-    }
-    if (!v.check) {
-      v.verifCheck = true
-    }
+    if(!v.pseudo) v.msgPseudoError = true
+    
+    if (!v.mdp || !v.verifMdp) v.msgMdpError = true
+    
+    if (v.check &&  (!v.msgPseudoError && !v.msgMdpError)  )  inscription_bdd()
+      
+    if (!v.check) v.verifCheck = true
+    
   })
 
-  $('#checkConnected').change(function() {
-    if (v.check) {
-      v.verifCheck = false
-    } else {
-      v.verifCheck = true
-    }
-  })
+  $('#checkConnected').change(function() { (v.check) ? v.verifCheck = false : v.verifCheck = true })
+
 
   $('#pseudo').focusout(function() {
     v.textePseudoError = 'Pseudo trop court'
@@ -97,36 +84,36 @@ $(document).ready(function() {
 })
 
 function inscription_bdd() {
-  var content = { pseudo: v.pseudo, mdp: v.mdp } //object
+  // Check pseudo / password are not empty
 
-  return fetch('./api/index.php?controller=inscription', {
+  // Send the login request
+  return fetch(`${API_PREFIX}register`, {
     method: 'POST',
     headers: { 'Content-type': 'application/json' },
-    body: JSON.stringify(content)
-  })
-    .then(res => res.json()) // on récupère le corps au format text.
-    .then(res => {
-      console.log(res)
-      if (res == true) {
-        location.href = 'page.php'
-      }
-      if (res == 'pseudo_deja_enregistre') {
-        v.textePseudoError = 'Pseudo déja enregistré'
-        v.pseudoError = true
-        v.msgPseudoError = true
-      }
+    body: JSON.stringify({
+      pseudo: v.pseudo,
+      password: v.mdp
     })
+  })
+    .then(async res => {
+      if (!isValidHttpCode(res)) {
+        // The server returned an error, stop the login process
+        const { error = 'The server returned an error.' } = await res.json().catch(_ => ({}))
+        v.texteMdpError = error
+        v.msgMdpError = true
+        return Promise.reject(error)
+      }
+      return res
+    })
+    .then(res => res.json())
+    .then(afterConnect)
+    .catch(console.error)
 }
 
-function inscription() {
-  var continuer = true
-
-  if (continuer) {
-    inscription_bdd()
-    alert('Insertion BDD')
-  }
+function afterConnect(res) {
+  if (!res) return
+  window.location.href = 'login.html'
 }
-
 
 Vue.config.devtools = true
 
