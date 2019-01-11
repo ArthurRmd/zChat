@@ -23,10 +23,16 @@ if (!$json || empty($json['toFriendId'])) {
   exit();
 }
 
+
 $userId = $_SESSION['user']['id'];
 $toFriendId = $json['toFriendId'];
 
-require __DIR__.'/../models/sendFriendRequest.php';
+if ($userId === $toFriendId) {
+  // Error : There's already a friend tuple
+  $httpCode = 409;
+  $error = 'You can\'t send a friend request to yourself..';
+}
+else require __DIR__.'/../models/sendFriendRequest.php';
 
 // The database returned an error
 if (isset($error))

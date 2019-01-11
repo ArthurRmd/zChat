@@ -19,6 +19,7 @@
         </a>
 
         <button @click="showAddFriendModal" class="ui inverted button profile-actions btn-add">Add a friend</button>
+        <button @click="showSeeFriendRequestModal" class="ui inverted button profile-actions btn-add">seeFriendRequest</button>
         <button @click="logout" class="ui inverted button profile-actions">Log out</button>
 
         <div class="ui modal" id="addFriend">
@@ -30,18 +31,48 @@
                 <label>Enter your friend's ID :</label>
                 <input type="number"  placeholder="Example : 46" v-model.number="addFriend.toAddId">
               </div>
-              <div v-if="addFriend.error.visible" class="ui error message">
-                <div class="header">Error</div>
-                <p>{{ addFriend.error.msg }}</p>
+              <div v-if="addFriend.notif.visible" class="ui message"
+              :class="[ addFriend.notif.type ? addFriend.notif.type : '' ]">
+                <div class="header">Notification</div>
+                <p>{{ addFriend.notif.msg }}</p>
               </div>
               
-              <div class="text-cente">
-                <button @click="sendFriendRequest" class="ui basic button">
-                  <i class="icon user"></i>
-                  Send friend request
-                </button>
-              </div>
+              <button @click="sendFriendRequest" class="ui basic button">
+                <i class="icon user"></i>
+                Send friend request
+              </button>
+            </div>
+          </div>
+        </div>
 
+        <div class="ui modal" id="seeFriendRequest">
+          <div class="header">See friend requests</div>
+          <div class="content">
+            <table class="ui inverted table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Pseudo</th>
+                  <th>Request date</th>
+                  <th>Accept</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(aFriendRequest, index) in seeFriendRequest.list" :key="'friendRequest' + index">
+                  <td>{{ ++index }}</td>
+                  <td>{{ aFriendRequest.pseudo }}</td>
+                  <td>{{ aFriendRequest.timestamp_friend_request }}</td>
+                  <td><button>Accept</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="ui form error">
+              <div v-if="seeFriendRequest.notif.visible" class="ui message"
+              :class="[ seeFriendRequest.notif.type ? seeFriendRequest.notif.type : '' ]"
+              >
+                <div class="header">Notification</div>
+                <p>{{ seeFriendRequest.notif.msg }}</p>
+              </div>
             </div>
 
           </div>

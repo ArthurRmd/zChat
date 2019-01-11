@@ -17,9 +17,20 @@ new Vue({
       autoRefreshMessagesToggle: true,
 
       addFriend: {
-        error: {
+        notif: {
           visible: false,
-          msg: null
+          msg: null,
+          type: 'info'
+        },
+        toAddId: null
+      },
+
+      seeFriendRequest: {
+        list: [],
+        notif: {
+          visible: false,
+          msg: null,
+          type: 'info'
         },
         toAddId: null
       }
@@ -86,11 +97,75 @@ new Vue({
       $('.ui.modal#addFriend').modal('show')
     },
 
-    sendFriendRequest() {
-      if (this.addFriend.toAddId) {
-        //appel au controller
-        alert('appel au controller addFriend : ID ->' + this.addFriend.toAddId)
+    showSeeFriendRequestModal() {
+      $('.ui.modal#seeFriendRequest').modal('show')
+      this.getFriendRequest()
+    },
+
+    async sendFriendRequest() {
+      if (!this.addFriend.toAddId) return
+
+      let res = await fetch(`${API_PREFIX}sendFriendRequest`, {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify({
+          toFriendId: this.addFriend.toAddId
+        })
+      })
+
+      // The server returned an error
+      if (!isValidHttpCode(res)) {
+        const { error = 'The server returned an error.' } = await res.json().catch(_ => ({}))
+        this.addFriend.notif.visible = true
+        this.addFriend.notif.msg = error
+        this.addFriend.notif.type = 'negative'
+        return
       }
+
+      res = await res.json()
+      this.addFriend.notif.visible = true
+      this.addFriend.notif.type = 'positive'
+      this.addFriend.notif.msg = res
+
+      if (res) this.addFriend.notif.msg = 'Friend request sent successfully.'
+    },
+
+    async getFriendRequest() {
+      let res = await fetch(`${API_PREFIX}getFriendRequest`)
+      if (!isValidHttpCode(res)) {
+        const { error = 'The server returned an error.' } = await res.json().catch(_ => ({}))
+        this.seeFriendRequest.notif.visible = true
+        this.seeFriendRequest.notif.msg = error
+        this.seeFriendRequest.notif.type = 'negative'
+        return
+      }
+      this.seeFriendRequest.list = await res.json()
+    },
+
+    async acceptFriendRequest() {
+      let res = await fetch(`${API_PREFIX}acceptFriendRequest`, {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify({
+          toFriendId: this.addFriend.toAddId
+        })
+      })
+
+      // The server returned an error
+      if (!isValidHttpCode(res)) {
+        const { error = 'The server returned an error.' } = await res.json().catch(_ => ({}))
+        this.addFriend.notif.visible = true
+        this.addFriend.notif.msg = error
+        this.addFriend.notif.type = 'negative'
+        return
+      }
+
+      res = await res.json()
+      this.addFriend.notif.visible = true
+      this.addFriend.notif.type = 'positive'
+      this.addFriend.notif.msg = res
+
+      if (res) this.addFriend.notif.msg = 'Friend request sent successfully.'
     },
 
     // Set the notification

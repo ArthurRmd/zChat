@@ -52,7 +52,7 @@ try {
 
   // Adding friend request to db
   $res = $dbLink->execute(
-    'INSERT INTO friend (user1, user2) VALUES (:userId, :toFriendId)',
+    'INSERT INTO friend (user_asker, user_asked) VALUES (:userId, :toFriendId)',
     ['userId' => $userId, 'toFriendId' => $toFriendId]
   );
 } catch (PDOException $e) {
