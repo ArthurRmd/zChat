@@ -22,11 +22,17 @@ var v = new Vue({
 
     verifCheck: false,
     check: false
+  },
+
+  methods:{
+    checkLabel: function () {
+      this.check==true ? this.verifCheck=true : this.verifCheck=false
+    }
   }
 })
 
 $(document).ready(function() {
-  $('.ui.checkbox').checkbox()
+  
 
   $('.btn-envoi').click(function() {
     if (!v.pseudo) {
@@ -120,3 +126,7 @@ function inscription() {
     alert('Insertion BDD')
   }
 }
+
+
+Vue.config.devtools = true
+
