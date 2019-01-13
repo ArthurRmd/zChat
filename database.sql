@@ -16,9 +16,10 @@ CREATE TABLE friend (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO friend (user_asker, user_asked, friend_accept, timestamp_friend_request, timestamp_friend_ok) VALUES
-(1, 2, 0, '2018-12-03 22:22:42', NULL),
-(1, 3, 1, '2018-12-03 22:22:42', '2018-12-22 11:30:55'),
-(1, 4, 1, '2018-12-03 22:22:42', '2018-12-23 11:30:55');
+(1, 3, 1, '2019-01-13 19:56:29', NULL),
+(2, 1, 1, '2019-01-13 19:18:06', NULL),
+(4, 1, 1, '2019-01-13 19:18:33', NULL),
+(5, 1, 0, '2019-01-13 19:57:12', NULL);
 
 CREATE TABLE message (
   id int(11) NOT NULL,
@@ -29,43 +30,14 @@ CREATE TABLE message (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO message (id, sender, receiver, `timestamp`, content) VALUES
-(1, 1, 2, '2018-11-30 15:24:08', 'bonjour0'),
-(2, 1, 2, '2018-11-30 16:32:31', 'bonjour1'),
-(3, 2, 1, '2018-11-30 16:32:38', 'bonjour2'),
-(4, 1, 2, '2018-11-30 16:33:37', 'bonjour3'),
-(5, 2, 1, '2018-11-30 16:40:51', 'bonjour4'),
-(9, 1, 1, '2018-12-19 19:49:02', 'bonjour mdr ✈ comment vas-tu ? ⭐ test ✈'),
-(10, 1, 1, '2018-12-19 19:49:04', 'bonjour mdr ✈ comment vas-tu ? ⭐ test ✈'),
-(14, 1, 1, '2018-12-19 19:50:34', 'bonjour mdr ✈ comment vas-tu ? ⭐ test ✈'),
-(15, 3, 2, '2018-12-19 21:22:09', 'bonjour mdr ✈ comment vas-tu ? ⭐ test ✈'),
-(16, 3, 2, '2018-12-19 21:22:26', 'bonjour mdr ✈ comment vas-tu ? ⭐ test ✈'),
-(17, 1, 2, '2018-12-19 19:49:02', 'bonjour mdr ✈ comment vas-tu ? ⭐ test ✈'),
-(18, 1, 2, '2018-12-19 19:49:02', 'bonjour mdr ✈ comment vas-tu ? ⭐ test ✈'),
-(19, 2, 1, '2018-12-19 19:49:02', 'bonjourerferg mdr ✈ comment vas-tu ? ⭐ test ✈'),
-(20, 2, 1, '2018-12-19 19:49:02', 'bonjourerferg mdr ✈ comment vas-tu ? ⭐ test ✈'),
-(21, 1, 2, '2018-12-19 19:49:02', 'bonjour mdr ✈ comment vas-tu ? ⭐ test ✈'),
-(22, 1, 2, '2018-12-19 19:49:02', 'bonjour mdr ✈ comment vas-tu ? ⭐ test ✈'),
-(23, 2, 1, '2018-12-19 19:49:02', 'bonjourerferg mdr ✈ comment vas-tu ? ⭐ test ✈'),
-(24, 2, 1, '2018-12-19 19:49:02', 'bonjourerferg mdr ✈ comment vas-tu ? ⭐ test ✈'),
-(25, 1, 2, '2018-12-29 12:56:57', 'egrtgtr'),
-(26, 1, 2, '2018-12-29 13:00:08', 'tnytrn'),
-(27, 1, 2, '2018-12-29 13:08:20', 'hdfgh'),
-(28, 1, 2, '2018-12-29 13:08:50', 'regzergze'),
-(29, 1, 2, '2018-12-29 13:09:02', 'regzerg'),
-(30, 1, 2, '2018-12-29 13:10:21', 'terhgrth\n'),
-(31, 1, 2, '2018-12-29 13:10:25', ':plane:\n'),
-(32, 1, 2, '2018-12-29 13:10:26', '\n'),
-(33, 1, 2, '2018-12-29 13:11:17', 'zergzeg\n'),
-(34, 1, 2, '2018-12-29 13:11:27', '\nezrgzreg\n'),
-(35, 1, 2, '2018-12-29 13:11:52', 'zergze'),
-(36, 1, 2, '2018-12-29 13:11:56', 'sdfg'),
-(37, 1, 2, '2018-12-29 13:28:07', 'fdbvsdfgb'),
-(38, 1, 2, '2018-12-29 13:29:14', 'gzerg'),
-(39, 1, 2, '2018-12-29 13:43:22', 'mdr'),
-(40, 1, 2, '2018-12-29 13:48:40', '✈'),
-(41, 1, 2, '2018-12-29 13:53:36', '\\xF0\\x9F\\x8F\\x80'),
-(42, 1, 2, '2018-12-29 13:54:01', '🏀'),
-(43, 1, 2, '2018-12-29 13:54:01', 'zefze🏀loool');
+(1, 1, 2, '2019-01-13 19:57:49', 'Hey ! Comment vas-tu ?'),
+(2, 2, 1, '2019-01-13 19:58:05', 'Bien et toi ?'),
+(3, 1, 2, '2019-01-13 19:58:43', 'Super, je test zChat. Voici un emoji (: airplane:) : ✈'),
+(4, 1, 2, '2019-01-13 19:59:13', 'Allez un autre. : basketball: -> 🏀'),
+(5, 1, 2, '2019-01-13 20:07:16', '.'),
+(6, 1, 2, '2019-01-13 20:07:16', '.'),
+(7, 1, 2, '2019-01-13 20:07:16', '.'),
+(8, 1, 2, '2019-01-13 20:07:17', '.');
 
 CREATE TABLE `user` (
   id int(11) NOT NULL,
@@ -76,10 +48,11 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `user` (id, pseudo, `password`, is_banned, timestamp_creation) VALUES
-(1, 'rigwild', 'azerty', 0, '2018-11-30 15:23:35'),
-(2, 'rigwild2', 'azerty', 0, '2018-11-30 15:23:35'),
-(3, 'rigwild111', '$2y$10$Om75UPK/bZKgRkl0kj0P5uwMPYe8YLVkcAgfd16K6yFI8egcRietG', 0, '2018-12-19 20:35:03'),
-(4, 'rigwild1112', '$2y$10$Om75UPK/bZKgRkl0kj0P5uwMPYe8YLVkcAgfd16K6yFI8egcRietG', 0, '2018-12-19 20:35:03');
+(1, 'Antoine', '$2y$10$3xQ8e2W1M7LF3d1SZr6eseWYQiyvFmBB0Zm2rjuR6Zhuo2cPt2DYO', 0, '2019-01-13 19:16:01'),
+(2, 'Arthur', '$2y$10$3Mb.GqBkjncMgd5KR/iF3eHqNBI7GilnhFWiyPKhOf6W0aD6wI8yK', 0, '2019-01-13 19:16:08'),
+(3, 'Thomas', '$2y$10$TsEuDZGmEgpfoDMfdh9gReMJ4123SClNH117nt62JNlufE6s9Kige', 1, '2019-01-13 19:16:23'),
+(4, 'Océan', '$2y$10$ufNAOSDvbd0ChJC7xY87Yelyv5aJ3kT0EchZ99wL2UajJfeyyOvFW', 0, '2019-01-13 19:16:32'),
+(5, 'Benoit', '$2y$10$IvAOOuYL99D87FODyQA3D.NP3S6C9D5Ql5hKhSuOyDSGo4VjL8Day', 0, '2019-01-13 19:17:06');
 
 
 ALTER TABLE friend
@@ -97,9 +70,9 @@ ALTER TABLE `user`
 
 
 ALTER TABLE message
-  MODIFY id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 ALTER TABLE `user`
-  MODIFY id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 ALTER TABLE friend
   ADD CONSTRAINT friend_ibfk_1 FOREIGN KEY (user_asker) REFERENCES `user` (id) ON DELETE NO ACTION ON UPDATE NO ACTION,

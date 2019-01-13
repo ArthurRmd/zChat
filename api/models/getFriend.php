@@ -29,7 +29,7 @@ try {
       array_push($res, [
         'id' => $value['user2_id'],
         'pseudo' => $value['user2_pseudo'],
-        'isBanned' => $value['user2_is_banned'],
+        'is_banned' => $value['user2_is_banned'],
         'timestampFriends' => $value['timestamp_friend_ok']
       ]);
     }
@@ -37,7 +37,7 @@ try {
       array_push($res, [
         'id' => $value['user1_id'],
         'pseudo' => $value['user1_pseudo'],
-        'isBanned' => $value['user1_is_banned'],
+        'is_banned' => $value['user1_is_banned'],
         'timestampFriends' => $value['timestamp_friend_ok']
       ]);
     }

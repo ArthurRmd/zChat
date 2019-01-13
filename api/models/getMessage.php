@@ -18,8 +18,6 @@ try {
     return;
   }
 
-
-
   // Get the messages
   $query = 'SELECT * FROM message WHERE
   (sender = :userId AND receiver = :friendId)

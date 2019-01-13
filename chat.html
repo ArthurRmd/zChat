@@ -90,10 +90,10 @@
         <a v-for="(aFriend, index) in friends" :key="'friend' + index"
         :href="'chat.html?friendId=' + aFriend.id"
         class="item"
-        :class="{ banned: aFriend.isBanned }"
+        :class="{ banned: aFriend['is_banned'] }"
         >
           <span>{{ aFriend.pseudo }}</span>
-          <span class="bannedText">{{ aFriend.isBanned ? '(banned)' : '' }}</span>
+          <span class="bannedText">{{ aFriend['is_banned'] ? '(banned)' : '' }}</span>
         </a>
       </div>
     </div>
@@ -122,7 +122,11 @@
           </div>
         </div>
 
-        <div v-if="chatFriend !== null">
+        <div v-if="chatFriend">
+          <div class="friendInfo">
+            <span class="friendPseudo">{{ chatFriend.pseudo }}</span>
+            <span class="friendId">#{{ chatFriend.id }}</span>
+          </div>
           <div class="msg-list">
             <div v-for="(aMessage, index) in messages"
             :key="'msg' + index"
