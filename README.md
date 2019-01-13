@@ -23,6 +23,10 @@ Le framework CSS Semantic UI a été utilisé pour le design de l'application.
  - Accepter une demande d'ajout d'ami
  - Refuser une demande d'ajout d'ami
 
+## TODO
+ - [ ] Supprimer un ami déjà accepté
+ - [ ] Interface d'ajout d'emoji user-friendly
+
 ## Auteurs
  - Antoine SAUVAGE : Toute l'API. Toute la partie Vue.js.
  - Arthur REMOND : Pages de connexion/inscription et design de l'application
