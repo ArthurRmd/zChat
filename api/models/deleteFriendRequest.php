@@ -36,7 +36,7 @@ try {
   }
 
 
-  $query = 'UPDATE friend SET friend_accept = 1
+  $query = 'DELETE FROM friend
   WHERE (user_asker = :userId AND user_asked = :otherUserId)
   OR (user_asked = :userId2 AND user_asker = :otherUserId2)';
 

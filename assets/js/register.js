@@ -3,7 +3,7 @@ var v = new Vue({
 
   data: {
     //Pseudo
-    pseudo: 'Arthur',
+    pseudo: '',
     pseudoError: false,
     msgPseudoError: false,
     textePseudoError: 'Pseudo trop court',
@@ -11,8 +11,8 @@ var v = new Vue({
     textePseudo: 'Veuillez remplir le champs',
 
     //Mot de passe
-    mdp: 'Arthur00@',
-    verifMdp: 'Arthur00@',
+    mdp: '',
+    verifMdp: '',
     mdpError: false,
     msgMdpError: false,
     texteMdpError:
@@ -24,50 +24,48 @@ var v = new Vue({
     check: false
   },
 
-  methods:{
-    checkLabel: function () {
-      this.check==true ? this.verifCheck=true : this.verifCheck=false
+  methods: {
+    checkLabel: function() {
+      this.check == true ? (this.verifCheck = true) : (this.verifCheck = false)
     }
   }
 })
 
 $(document).ready(function() {
-  
+  $('.btn-envoi').click(function(e) {
+    e.preventDefault()
+    if (!v.pseudo) v.msgPseudoError = true
 
-  $('.btn-envoi').click(function() {
-    if(!v.pseudo) v.msgPseudoError = true
-    
     if (!v.mdp || !v.verifMdp) v.msgMdpError = true
-    
-    if (v.check &&  (!v.msgPseudoError && !v.msgMdpError)  )  inscription_bdd()
-      
+
+    if (v.check && (!v.msgPseudoError && !v.msgMdpError)) inscription_bdd()
+
     if (!v.check) v.verifCheck = true
-    
   })
 
-  $('#checkConnected').change(function() { (v.check) ? v.verifCheck = false : v.verifCheck = true })
-
+  $('#checkConnected').change(function() {
+    v.check ? (v.verifCheck = false) : (v.verifCheck = true)
+  })
 
   $('#pseudo').focusout(function() {
-    v.textePseudoError = 'Pseudo trop court'
-    if (!verifLongueur(v.pseudo, 3, 20)) {
-      v.pseudoError = true
+    if (!verifLongueur(v.pseudo, 3, 255)) {
+      v.textePseudoError = 'Invalid pseudo, 3 chars minimum.'
       v.msgPseudoError = true
+      v.pseudoError = true
     } else {
-      v.pseudoError = false
       v.msgPseudoError = false
+      v.pseudoError = false
     }
   })
 
   $('#mdp').focusout(function() {
-    if (!verifPassword(v.mdp)) {
-      v.mdpError = true
+    if (!verifLongueur(v.mdp, 4, 255)) {
+      v.texteMdpError = 'Invalid password, 4 chars minimum.'
       v.msgMdpError = true
-      v.texteMdpError =
-        'Veuillez mettre un mot de passe de 8 caractères, avec une minuscule, une majuscule, un chiffre, un symbole'
+      v.mdpError = true
     } else {
-      v.mdpError = false
       v.msgMdpError = false
+      v.mdpError = false
     }
   })
 
@@ -78,14 +76,12 @@ $(document).ready(function() {
     } else {
       v.mdpError = true
       v.msgMdpError = true
-      v.texteMdpError = 'Les mots de passe ne sont pas identiques'
+      v.texteMdpError = "Passwords don't match."
     }
   })
 })
 
 function inscription_bdd() {
-  // Check pseudo / password are not empty
-
   // Send the login request
   return fetch(`${API_PREFIX}register`, {
     method: 'POST',
@@ -116,4 +112,3 @@ function afterConnect(res) {
 }
 
 Vue.config.devtools = true
-

@@ -27,7 +27,9 @@ $(document).ready(function() {
   // Check if user is already logged in
   if (checkLoggedIn()) return (window.location.href = 'chat.html')
 
-  $('.btn-envoi').click(function() {
+  $('.btn-envoi').click(function(e) {
+    e.preventDefault()
+
     if (!v.msgPseudoError && !v.msgMdp) connexion_bdd()
   })
 

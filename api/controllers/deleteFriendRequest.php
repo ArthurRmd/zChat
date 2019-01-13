@@ -26,7 +26,7 @@ if (!$json || empty($json['otherUserId'])) {
 $userId = $_SESSION['user']['id'];
 $otherUserId = $json['otherUserId'];
 
-require __DIR__.'/../models/acceptFriendRequest.php';
+require __DIR__.'/../models/deleteFriendRequest.php';
 
 // The database returned an error
 if (isset($error))

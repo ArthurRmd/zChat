@@ -16,7 +16,7 @@
     <div class="bloc">
       <h1 class="titre">zChat - Login</h1>
       
-      <form class="ui form test" >
+      <form class="ui form test">
         <div class="field espace-field" :class="{ error: pseudoError }" id="pseudo">
           <label>Username</label>
           <div class="ui left icon input">
@@ -51,11 +51,12 @@
           </div>
         </div>
 
+        <button class="ui button btn-envoi" type="submit">Envoyer</button>
       </form>
 
-      <button class="ui button btn-envoi" type="submit">Envoyer</button>
+      <br>
+      <p>Need an account ? <a href="register.html">Register</a></p>
     </div>
-
   </div>
 
   <script src="./assets/js/vue.min.js"></script>

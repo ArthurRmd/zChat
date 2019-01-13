@@ -6,7 +6,8 @@ $dbLink = new Database();
 
 try {
   // Check if friend tuple exist
-  $query = 'SELECT 
+  $query = 'SELECT
+    id,
     pseudo, 
     timestamp_friend_request
   FROM friend
@@ -19,7 +20,7 @@ try {
 
   $res = $dbLink->select($query, $param);
 
-  if (count($res[0]) === 0) {
+  if (isset($res[0]) && count($res[0]) === 0) {
     // Error : There's no friend tuple
     $httpCode = 200;
     $error = 'You do not have any friend requests.';

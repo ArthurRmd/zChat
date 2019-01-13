@@ -46,23 +46,32 @@
         </div>
 
         <div class="ui modal" id="seeFriendRequest">
-          <div class="header">See friend requests</div>
-          <div class="content">
+          <div class="header">Friend requests</div>
+          <div v-if="seeFriendRequest.list.length === 0" class="content">
+            <p>You don't have any friend requests.</p>
+          </div>
+          <div v-else class="content">
             <table class="ui inverted table">
               <thead>
                 <tr>
-                  <th>#</th>
+                  <th>id</th>
                   <th>Pseudo</th>
                   <th>Request date</th>
-                  <th>Accept</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="(aFriendRequest, index) in seeFriendRequest.list" :key="'friendRequest' + index">
-                  <td>{{ ++index }}</td>
+                  <td>{{ aFriendRequest.id }}</td>
                   <td>{{ aFriendRequest.pseudo }}</td>
                   <td>{{ aFriendRequest.timestamp_friend_request }}</td>
-                  <td><button>Accept</button></td>
+                  <td>
+                    <div class="ui mini buttons">
+                      <button class="ui positive button" @click="answerFriendRequest(aFriendRequest, true)">Accept</button>
+                      <div class="or"></div>
+                      <button class="ui negative button" @click="answerFriendRequest(aFriendRequest, false)">Refuse</button>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>

@@ -14,9 +14,8 @@
 
 <body>
   <div id="app">
-
     <div class="bloc">
-      <h1 class="titre">Inscription</h1>
+      <h1 class="titre">Inscription - zChat</h1>
 
       <form class="ui form test" >
         <div class="field espace-field" :class="{ error: pseudoError }" id="pseudo">
@@ -65,29 +64,27 @@
         </div>
 
         <div class="field check ">
-            <div class="ui checkbox">
-
-              <input type="checkbox"  v-model="check"@click="checkLabel" >
-
-
-
-
-              <label>J'accepte les conditions d'utilisation</label>
-            </div>
-            <div class="ui pointing red basic label " v-if="verifCheck">
-                Merci d'accepter les conditions
-            </div>
+          <div class="ui checkbox">
+            <input type="checkbox" v-model="check" @click="checkLabel" id="TOS">
+            <label for="TOS">J'accepte les conditions d'utilisation</label>
           </div>
+
+          <div class="ui pointing red basic label " v-if="verifCheck">
+              Merci d'accepter les conditions
+          </div>
+        </div>
+
+        <button class="ui button btn-envoi" type="submit">Envoyer</button>
       </form>
 
-      <button class="ui button btn-envoi"@click="inscription">Envoyer</button>
+      <br>
+      <p>Already have an account ? <a href="login.html">Login</a></p>
     </div>
-
   </div>
 
-  <script src="./assets/js/vue.min.js"></script>
+  <script src="./assets/js/vue.js"></script>
   <script src="./assets/js/jquery-3.3.1.min.js"></script>
-  <script src="./assets/js/register.js"></script>
   <script src="./assets/js/app.js"></script>
+  <script src="./assets/js/register.js"></script>
 </body>
 </html>

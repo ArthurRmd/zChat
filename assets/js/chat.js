@@ -31,8 +31,7 @@ new Vue({
           visible: false,
           msg: null,
           type: 'info'
-        },
-        toAddId: null
+        }
       }
     }
   },
@@ -94,10 +93,12 @@ new Vue({
     },
 
     showAddFriendModal() {
+      this.addFriend.notif.visible = false
       $('.ui.modal#addFriend').modal('show')
     },
 
     showSeeFriendRequestModal() {
+      this.seeFriendRequest.notif.visible = false
       $('.ui.modal#seeFriendRequest').modal('show')
       this.getFriendRequest()
     },
@@ -123,11 +124,11 @@ new Vue({
       }
 
       res = await res.json()
-      this.addFriend.notif.visible = true
-      this.addFriend.notif.type = 'positive'
-      this.addFriend.notif.msg = res
-
-      if (res) this.addFriend.notif.msg = 'Friend request sent successfully.'
+      if (res) {
+        this.addFriend.notif.visible = true
+        this.addFriend.notif.type = 'positive'
+        this.addFriend.notif.msg = 'Friend request sent successfully.'
+      }
     },
 
     async getFriendRequest() {
@@ -142,30 +143,42 @@ new Vue({
       this.seeFriendRequest.list = await res.json()
     },
 
-    async acceptFriendRequest() {
-      let res = await fetch(`${API_PREFIX}acceptFriendRequest`, {
-        method: 'POST',
-        headers: { 'Content-type': 'application/json' },
-        body: JSON.stringify({
-          toFriendId: this.addFriend.toAddId
-        })
-      })
+    async answerFriendRequest(friendRequest, acceptBool) {
+      let res = await fetch(
+        `${API_PREFIX}${acceptBool ? 'acceptFriendRequest' : 'deleteFriendRequest'}`,
+        {
+          method: 'POST',
+          headers: { 'Content-type': 'application/json' },
+          body: JSON.stringify({
+            otherUserId: friendRequest.id
+          })
+        }
+      )
 
       // The server returned an error
       if (!isValidHttpCode(res)) {
         const { error = 'The server returned an error.' } = await res.json().catch(_ => ({}))
-        this.addFriend.notif.visible = true
-        this.addFriend.notif.msg = error
-        this.addFriend.notif.type = 'negative'
+        this.seeFriendRequest.notif.visible = true
+        this.seeFriendRequest.notif.msg = error
+        this.seeFriendRequest.notif.type = 'negative'
         return
       }
 
       res = await res.json()
-      this.addFriend.notif.visible = true
-      this.addFriend.notif.type = 'positive'
-      this.addFriend.notif.msg = res
+      if (res) {
+        this.seeFriendRequest.notif.visible = true
+        this.seeFriendRequest.notif.type = 'positive'
 
-      if (res) this.addFriend.notif.msg = 'Friend request sent successfully.'
+        const idInArr = this.seeFriendRequest.list.findIndex(x => x === friendRequest)
+        if (acceptBool) {
+          // The the new friend to the friend list
+          this.friends.push(this.seeFriendRequest.list[idInArr])
+          this.seeFriendRequest.notif.msg = 'Friend request accepted successfully.'
+        } else this.seeFriendRequest.notif.msg = 'Friend request deleted successfully.'
+
+        // Remove the friend request from the list
+        this.seeFriendRequest.list.splice(idInArr, 1)
+      }
     },
 
     // Set the notification
