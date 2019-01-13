@@ -15,6 +15,7 @@ Le framework CSS Semantic UI a été utilisé pour le design de l'application.
 ## Fonctionnalités
  - Connexion sécurisée. Le mot de passe est hashé en base de données. La connexion est mise en cache dans le cache du navigateur (`localStorage`) afin de minimiser les requêtes inutiles au serveur.
  - Inscription
+ - Gestion compte banni
  - Ecrans de loading lors du chargement des requêtes API
  - Reception / Envoi de message
  - Rafraichissement automatique des messages togglable
