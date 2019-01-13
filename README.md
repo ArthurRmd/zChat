@@ -23,6 +23,19 @@ Le framework CSS Semantic UI a été utilisé pour le design de l'application.
  - Accepter une demande d'ajout d'ami
  - Refuser une demande d'ajout d'ami
 
+ ## Configurer
+ 1. Installer le SGBD MySQL
+ 2. Créer une base de données avec le nom de votre choix
+ 3. Importer dans cette base de données le fichier [database.sql](database.sql)
+ 4. Renommer le fichier [DatabaseConfig.default.class.php](api/lib/DatabaseConfig.default.class.php) en `DatabaseConfig.class.php`
+ 5. Configurer la connexion à votre base de données dans le fichier `DatabaseConfig.class.php`
+
+## Test
+Des comptes de test avec des données pré-remplies ont été généré dans le fichier [database.sql](database.sql).
+Les utilisateurs sont les suivants : `[Antoine, Arthur, Thomas, Océan, Benoit]`. Le mot de passe de ces comptes est `test`.
+
+*Selon votre configuration/version de PHP, le hashage des mots de passe fait de manière différente. Si c'est le cas, ces comptes ne pourront pas fonctionner.*
+
 ## TODO
  - [ ] Supprimer un ami déjà accepté
  - [ ] Interface d'ajout d'emoji user-friendly
