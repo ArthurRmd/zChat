@@ -45,8 +45,5 @@ Les utilisateurs sont les suivants : `[Antoine, Arthur, Thomas, Océan, Benoit]`
  - Antoine SAUVAGE : Toute l'API. Toute la partie Vue.js.
  - Arthur REMOND : Pages de connexion/inscription et design de l'application
 
-## Repository GitHub
-[https://github.com/ArthurRmd/zChat](https://github.com/ArthurRmd/zChat)
-
 ## Licence
 [Licence MIT](https://github.com/ArthurRmd/zChat/blob/master/LICENSE)
